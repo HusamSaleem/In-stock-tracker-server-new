@@ -9,9 +9,7 @@
 # Registration (/api/v1/user/register)
 **You send:** registration info via request body in JSON. **You get:** a status code ```200``` for successful response
 
-Example
-
-Request: 
+Example Request: 
 ```
 {
     "password" : "password",
@@ -33,9 +31,7 @@ Failed Response (Duplicate emails):
 # Login (/api/v1/user/login)
 **You send:** login credentials via request body in JSON. **You get:** registered user with a ```uniqueIdentifier```
 
-Example
-
-Request:
+Example Request:
 ```
 {
     "password" : "password",
@@ -63,11 +59,38 @@ Failed Response (Bad password):
 }
 ```
 
-# Get Item from website
-
-# Get Item (/api/v1/item?itemId=<itemId>&website=<website>)
+# Get Item from website (/api/v1/item?itemId=(itemId)&website=(website)
+    
 **You send:** item id of the product and website name as query params. **You get** the item's info
 
-Example
+Example Request:
+```
+http://localhost:8080/api/v1/item?itemId=B08166SLDF&website=amazon
+```
 
-    
+Successful Response:
+```
+{
+    "itemId": "B08166SLDF",
+    "price": "$229.00",
+    "name": "AMD Ryzen 5 5600X 6-core, 12-Thread Unlocked Desktop Processor with Wraith Stealth Cooler",
+    "website": "amazon",
+    "inStock": true
+}
+```
+
+Failed Responses:
+```
+{
+    "message": "Invalid website name",
+    "httpStatus": "NOT_FOUND",
+    "timeStamp": "2022-03-30T23:01:47.7765126Z"
+}
+```
+```
+{
+    "message": "item from amazon with id: B08166LDFA not found",
+    "httpStatus": "NOT_FOUND",
+    "timeStamp": "2022-03-30T23:02:05.1125958Z"
+}
+```
