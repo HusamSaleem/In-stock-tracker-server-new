@@ -101,7 +101,7 @@ Failed Response:
 
 # Get item from website (/api/v1/item?itemId={itemId}&website={website} - Type GET
     
-**You send:** item id of the product and website name as query params. **You get** the item's info
+**You send:** item id of the product and website name as query params. **You get** an ```Item``` back
 
 Example Request:
 ```
@@ -166,7 +166,7 @@ Failed Response:
 ```
 
 # Add item to the user's watchlist (/api/v1/watchlist/{uniqueIdentifer}) - Type POST
-**You send ```uniqueIdentifer``` and ```itemId```, ```website``` in the request body as JSON. **You get:** the full ```item``` back
+**You send ```uniqueIdentifer``` and ```itemId```, ```website``` in the request body as JSON. **You get:** the ```Item``` back
 
 Example Request:
 ```
