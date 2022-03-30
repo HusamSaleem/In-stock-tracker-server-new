@@ -5,6 +5,7 @@
 - The notifications will be sent to the email of the user which consists of all the ```Items``` that the user has in their ```Watchlist```
 - Authenticaion service
 - Utilizes Postegresql as the DB
+- Documented API!
 
 # More information about this project
 - https://github.com/HusamSaleem/in_stock_flutterApp/blob/main/README.md
