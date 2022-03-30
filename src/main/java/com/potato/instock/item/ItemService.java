@@ -74,6 +74,6 @@ public class ItemService {
             return getItemFromAmazon(itemId);
         }
 
-        return null;
+        throw new ItemNotFoundException("Invalid website name");
     }
 }
