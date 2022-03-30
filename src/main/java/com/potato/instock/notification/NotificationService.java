@@ -44,13 +44,17 @@ public class NotificationService {
         watchlists.forEach(this::updateWatchlist);
 
         // Get all the users' that want to be notified by email
-        List<User> users = userRepository.findByNotifyByEmail(true);
+        List<User> users = userRepository.findAll();
+        users = users.stream()
+                .filter(User::isNotifyByEmail)
+                .collect(Collectors.toList());
 
         // Start notifying users
         users.forEach(user -> handleNotification(user,
                 watchlists.stream()
                         .filter(list -> Objects.equals(list.getId(), user.getId()))
-                        .findFirst()));
+                        .findFirst())
+        );
     }
 
     private void updateWatchlist(Watchlist list) {
@@ -59,6 +63,10 @@ public class NotificationService {
 
     private void handleNotification(User user, Optional<Watchlist> optionalWatchlist) {
         if (optionalWatchlist.isEmpty()) {
+            return;
+        }
+
+        if (optionalWatchlist.get().getCurrentWatchlist().size() == 0) {
             return;
         }
 

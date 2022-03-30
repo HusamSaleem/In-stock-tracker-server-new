@@ -59,7 +59,7 @@ public class UserService {
         if (existingUserByEmail.isPresent()) {
             throw new UserExistsException("email is taken");
         }
-        newUser.setEmail(newUser.getEmail().toLowerCase());
+        newUser.setEmail(newUser.getEmail().toLowerCase().trim());
         // Encrypt password
         newUser.setPassword(getEncryptedPassword(newUser.getPassword()));
         userRepository.save(newUser);

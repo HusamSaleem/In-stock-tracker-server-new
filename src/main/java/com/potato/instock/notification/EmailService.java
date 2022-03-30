@@ -14,7 +14,6 @@ import java.util.Properties;
 @Component
 public class EmailService {
     private final NotificationConfig notificationConfig;
-
     @Autowired
     public EmailService(NotificationConfig notificationConfig) {
         this.notificationConfig = notificationConfig;
@@ -23,8 +22,8 @@ public class EmailService {
     public void sendMailNotification(String recipient,
                                      List<Item> items) throws MessagingException {
         Properties properties = new Properties();
-        properties.put("mail.smtp.auth", notificationConfig.isAuth());
-        properties.put("mail.smtp.starttls.enable", notificationConfig.isTls());
+        properties.put("mail.smtp.auth", notificationConfig.getAuth());
+        properties.put("mail.smtp.starttls.enable", notificationConfig.getTls());
         properties.put("mail.smtp.host", notificationConfig.getHost());
         properties.put("mail.smtp.port", notificationConfig.getPort());
 

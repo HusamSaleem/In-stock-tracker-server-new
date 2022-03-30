@@ -26,6 +26,7 @@ public class ItemService {
         webClient.getOptions().setDoNotTrackEnabled(true);
         webClient.getOptions().setDownloadImages(false);
         webClient.getOptions().setJavaScriptEnabled(false);
+        webClient.getOptions().setUseInsecureSSL(true);
     }
 
     private Item getItemFromAmazon(String itemId) {

@@ -16,9 +16,9 @@ public class NotificationConfig {
     @Value("${spring.mail.port}")
     private Integer port;
     @Value("${spring.mail.properties.mail.smtp.auth}")
-    private boolean auth;
+    private String auth;
     @Value("${spring.mail.properties.mail.smtp.starttls.enable}")
-    private boolean tls;
+    private String tls;
 
     public NotificationConfig() {
     }
@@ -35,15 +35,13 @@ public class NotificationConfig {
         return host;
     }
 
-    public Integer getPort() {
-        return port;
-    }
+    public Integer getPort() { return port; }
 
-    public boolean isAuth() {
+    public String getAuth() {
         return auth;
     }
 
-    public boolean isTls() {
+    public String getTls() {
         return tls;
     }
 }
