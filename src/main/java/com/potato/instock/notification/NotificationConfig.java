@@ -44,16 +44,4 @@ public class NotificationConfig {
     public String getTls() {
         return tls;
     }
-
-    @Override
-    public String toString() {
-        return "NotificationConfig{" +
-                "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", host='" + host + '\'' +
-                ", port=" + port +
-                ", auth='" + auth + '\'' +
-                ", tls='" + tls + '\'' +
-                '}';
-    }
 }

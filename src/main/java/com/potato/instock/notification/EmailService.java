@@ -27,8 +27,6 @@ public class EmailService {
         properties.put("mail.smtp.host", notificationConfig.getHost());
         properties.put("mail.smtp.port", notificationConfig.getPort());
 
-        System.out.println(notificationConfig.toString());
-
         // Set up the server's email
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
