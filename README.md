@@ -6,11 +6,12 @@
 # REST API
 - Documentation for my api
 
-# Registration (/api/v1/user/register)
+# Registration (/api/v1/user/register) - Type POST
 **You send:** registration info via request body in JSON. **You get:** a status code ```200``` for successful response
 
 Example Request: 
 ```
+POST /api/v1/user/register
 {
     "password" : "password",
     "email": "email@domain.com"
@@ -28,11 +29,12 @@ Failed Response (Duplicate emails):
 }
 ```
 
-# Login (/api/v1/user/login)
+# Login (/api/v1/user/login) - Type POST
 **You send:** login credentials via request body in JSON. **You get:** registered user with a ```uniqueIdentifier```
 
 Example Request:
 ```
+POST /api/v1/user/login
 {
     "password" : "password",
     "email": "email@domain.com"
@@ -59,13 +61,32 @@ Failed Response (Bad password):
 }
 ```
 
-# Get Item from website (/api/v1/item?itemId=(itemId)&website=(website)
+# Update Email (/api/v1/user/email/{uniqueIdentifer}?newEmail={newEmail}) - Type PUT
+**You send:** ```uniqueIdentifier``` and ```newEmail```. **You get:** ```200``` status code
+
+Example Request:
+```
+PUT /api/v1/user/email/1b2b3b7e-9f53-422e-b91c-c1b6f85ba7e0?newEmail=potato@gmail.com
+```
+
+Successful Response: ```200 ok```
+
+Failed Response:
+```
+{
+    "message": "user does not exist",
+    "httpStatus": "BAD_REQUEST",
+    "timeStamp": "2022-03-30T23:07:45.9204719Z"
+}
+```
+
+# Get Item from website (/api/v1/item?itemId={itemId}&website={website} - Type GET
     
 **You send:** item id of the product and website name as query params. **You get** the item's info
 
 Example Request:
 ```
-http://localhost:8080/api/v1/item?itemId=B08166SLDF&website=amazon
+GET /api/v1/item?itemId=B08166SLDF&website=amazon
 ```
 
 Successful Response:
@@ -94,3 +115,6 @@ Failed Responses:
     "timeStamp": "2022-03-30T23:02:05.1125958Z"
 }
 ```
+
+
+
