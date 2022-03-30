@@ -1,5 +1,9 @@
 # Server for the In-Stock Tracker
 
+# Features
+- Scheduled notification service for all users who allow it
+- The notifications will be sent to the email of the user which consists of all the ```Items``` that the user has in their ```watchlist```
+
 # More information about this project
 - https://github.com/HusamSaleem/in_stock_flutterApp/blob/main/README.md
 
