@@ -80,7 +80,26 @@ Failed Response:
 }
 ```
 
-# Get Item from website (/api/v1/item?itemId={itemId}&website={website} - Type GET
+# Update Notification Preference (/api/v1/user/notifications/{uniqueIdentifer}?notifyByEmail={newEmail}) - Type PUT
+**You send:** ```uniqueIdentifier``` and ```notifyByEmail```. **You get:** ```200``` status code
+
+Example Request:
+```
+PUT /api/v1/user/notifications/1b2b3b7e-9f53-422e-b91c-c1b6f85ba7e0?notifyByEmail=true
+```
+
+Successful Response: ```200 ok```
+
+Failed Response:
+```
+{
+    "message": "user does not exist",
+    "httpStatus": "BAD_REQUEST",
+    "timeStamp": "2022-03-30T23:07:45.9204719Z"
+}
+```
+
+# Get item from website (/api/v1/item?itemId={itemId}&website={website} - Type GET
     
 **You send:** item id of the product and website name as query params. **You get** the item's info
 
@@ -116,5 +135,86 @@ Failed Responses:
 }
 ```
 
+# Get user watchlist (/api/v1/watchlist/{uniqueIdentifer}) - Type GET
+**You send:** ```uniqueIdentifier``` **You get:** a list of ```Item```
 
+Example Request:
+```
+GET /api/v1/watchlist/1b2b3b7e-9f53-422e-b91c-c1b6f85ba7e0
+```
 
+Successful Response:
+```
+[
+    {
+        "itemId": "B0815XFSGK",
+        "price": "$339.99",
+        "name": "AMD Ryzen 7 5800X 8-core, 16-Thread Unlocked Desktop Processor",
+        "website": "amazon",
+        "inStock": true
+    }
+]
+```
+
+Failed Response:
+```
+{
+    "message": "user does not exist",
+    "httpStatus": "BAD_REQUEST",
+    "timeStamp": "2022-03-30T23:14:27.9539695Z"
+}
+```
+
+# Add item to the user's watchlist (/api/v1/watchlist/{uniqueIdentifer}) - Type POST
+**You send ```uniqueIdentifer``` and ```itemId```, ```website``` in the request body as JSON. **You get:** the full ```item``` back
+
+Example Request:
+```
+POST /api/v1/watchlist/1b2b3b7e-9f53-422e-b91c-c1b6f85ba7e0
+{
+    "itemId": "B0815XFSGK",
+    "website": "amazon"
+}
+```
+
+Successful Response:
+```
+{
+    "itemId": "B0815XFSGK",
+    "price": "$339.99",
+    "name": "AMD Ryzen 7 5800X 8-core, 16-Thread Unlocked Desktop Processor",
+    "website": "amazon",
+    "inStock": true
+}
+```
+
+Failed Response:
+```
+{
+    "message": "item already in watchlist",
+    "httpStatus": "NOT_FOUND",
+    "timeStamp": "2022-03-30T23:16:52.0647395Z"
+}
+```
+
+# Delete an item from a user's watchlist (/api/v1/watchlist/{uniqueIdentifer}) - Type Delete
+**You send ```uniqueIdentifer``` and ```itemId``` in request body as JSON. **You get:** status code ```200```
+
+Example Request
+```
+DELETE /api/v1/watchlist/1b2b3b7e-9f53-422e-b91c-c1b6f85ba7e0
+{
+    "itemId": "B0815XFSGK"
+}
+```
+
+Successful Response: ```200 ok```
+
+Failed Response:
+```
+{
+    "message": "not able to find item id: B0815XFSGK in the user's watchlist",
+    "httpStatus": "NOT_FOUND",
+    "timeStamp": "2022-03-30T23:18:51.3202069Z"
+}
+```
