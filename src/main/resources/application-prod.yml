@@ -7,8 +7,8 @@ spring.autoconfigure.exclude[0]=org.springframework.boot.autoconfigure.security.
 
 spring.mail.host=smtp.gmail.com
 spring.mail.port=587
-spring.mail.username=${EMAIL}
-spring.mail.password=${EMAIL_PASSWORD}
+spring.mail.username=email
+spring.mail.password=password
 spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
 mail.smtp.debug=false
