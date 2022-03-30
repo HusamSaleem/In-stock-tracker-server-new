@@ -9,6 +9,20 @@
 # More information about this project
 - https://github.com/HusamSaleem/in_stock_flutterApp/blob/main/README.md
 
+# To deploy on Heroku
+- Make sure to use postegresql
+- Have a gmail account to use to send notifications
+- Edit the config vars on heroku to include these properties
+```
+Config Vars
+{
+    EMAIL : ${YOUR_EMAIL_ADDRESS}
+    EMAIL_PASSWORD : ${YOUR_APP_PASSWORD},
+    SPRING_PROFILES_ACTIVE : prod
+}
+
+```
+
 # REST API
 - Documentation for my api
 
