@@ -63,5 +63,11 @@ Failed Response (Bad password):
 }
 ```
 
+# Get Item from website
 
+# Get Item (/api/v1/item?itemId=<itemId>&website=<website>)
+**You send:** item id of the product and website name as query params. **You get** the item's info
 
+Example
+
+    
