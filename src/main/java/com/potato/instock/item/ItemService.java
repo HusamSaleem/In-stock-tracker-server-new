@@ -54,6 +54,12 @@ public class ItemService {
         HtmlSpan expression = page.getFirstByXPath("//*[@id=\"corePrice_feature_div\"]/div/span/span[2]");
         String price = expression != null ? expression.asNormalizedText() : "";
 
+        // If price is empty, check another path
+        if (price.equals("")) {
+            expression = page.getFirstByXPath("//*[@id=\"corePriceDisplay_desktop_feature_div\"]/div[1]/span/span[2]");
+            price = expression != null ? expression.asNormalizedText() : "";
+        }
+
         expression = page.getFirstByXPath("//*[@id=\"productTitle\"]");
         String name = expression != null ? expression.asNormalizedText() : "";
 
