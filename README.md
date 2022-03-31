@@ -218,7 +218,7 @@ Failed Response:
 }
 ```
 
-# Delete an item from a user's watchlist (/api/v1/watchlist/{uniqueIdentifer}) - Type Delete
+# Delete an item from a user's watchlist (/api/v1/watchlist/{uniqueIdentifer}) - Type DELETE
 **You send ```uniqueIdentifer``` and ```itemId``` in request body as JSON. **You get:** ```200``` status code
 
 Example Request
