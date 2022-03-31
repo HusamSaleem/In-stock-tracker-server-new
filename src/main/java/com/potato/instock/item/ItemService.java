@@ -57,8 +57,15 @@ public class ItemService {
         expression = page.getFirstByXPath("//*[@id=\"productTitle\"]");
         String name = expression != null ? expression.asNormalizedText() : "";
 
+        // Check instock span first
         expression = page.getFirstByXPath("//*[@id=\"availability\"]/span");
         boolean inStock = expression != null && expression.asNormalizedText().length() > 0;
+
+        // if instock is false, check if "add to cart" button exists
+        if (!inStock) {
+            expression = page.getFirstByXPath("//*[@id=\"submit.add-to-cart-announce\"]");
+            inStock = expression != null && expression.asNormalizedText().equals("Add to Cart");
+        }
 
         if (name == null && price == null) {
             throw new ItemNotFoundException("item from amazon with id: " + itemId + " not found");
