@@ -60,6 +60,18 @@ public class ItemService {
             price = expression != null ? expression.asNormalizedText() : "";
         }
 
+        // Check another path...
+        if (price.equals("")) {
+            expression = page.getFirstByXPath("//*[@id=\"corePrice_feature_div\"]/div/span/span[1]");
+            price = expression != null ? expression.asNormalizedText() : "";
+        }
+
+        // And another one!
+        if (price.equals("")) {
+            expression = page.getFirstByXPath("//*[@id=\"corePriceDisplay_desktop_feature_div\"]/div[1]/span[2]/span[1]");
+            price = expression != null ? expression.asNormalizedText() : "";
+        }
+
         expression = page.getFirstByXPath("//*[@id=\"productTitle\"]");
         String name = expression != null ? expression.asNormalizedText() : "";
 
