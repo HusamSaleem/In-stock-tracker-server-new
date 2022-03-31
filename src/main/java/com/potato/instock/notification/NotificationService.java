@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -33,6 +34,7 @@ public class NotificationService {
     }
 
     @Scheduled(fixedRate = SCHEDULE_RATE, initialDelay = 10000)
+    @Transactional
     public void scheduleTaskWithInitialDelay() {
         // Get all watchlisted items from the users
         List<Watchlist> watchlists = watchlistRepository.findAll();
@@ -58,7 +60,13 @@ public class NotificationService {
     }
 
     private void updateWatchlist(Watchlist list) {
-        list.getCurrentWatchlist().forEach(item -> itemService.getItemFromWebsite(item.getItemId(), item.getWebsite()));
+        for (Item item : list.getCurrentWatchlist()) {
+            Item updatedItem = itemService.getItemFromWebsite(item.getItemId(), item.getWebsite());
+
+            if (updatedItem != null) {
+                item = updatedItem;
+            }
+        }
     }
 
     private void handleNotification(User user, Optional<Watchlist> optionalWatchlist) {
