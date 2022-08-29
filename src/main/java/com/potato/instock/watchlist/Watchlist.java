@@ -2,6 +2,8 @@ package com.potato.instock.watchlist;
 
 import com.potato.instock.item.Item;
 import com.vladmihalcea.hibernate.type.json.JsonType;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
@@ -11,11 +13,12 @@ import java.util.List;
 
 @Entity
 @TypeDef(name = "json", typeClass = JsonType.class)
+@Getter
+@Setter
 public class Watchlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Type(type = "json")
     @Column(columnDefinition = "jsonb")
     private List<Item> currentWatchlist;
@@ -26,22 +29,6 @@ public class Watchlist {
 
     public Watchlist(Long id, List<Item> currentWatchlist) {
         this.id = id;
-        this.currentWatchlist = currentWatchlist;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public List<Item> getCurrentWatchlist() {
-        return currentWatchlist;
-    }
-
-    public void setCurrentWatchlist(List<Item> currentWatchlist) {
         this.currentWatchlist = currentWatchlist;
     }
 }
