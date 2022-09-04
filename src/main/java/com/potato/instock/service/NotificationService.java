@@ -4,6 +4,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
+import com.potato.instock.model.Item;
 import com.potato.instock.model.User;
 import com.potato.instock.model.Watchlist;
 import com.potato.instock.repository.UserRepository;
@@ -55,6 +56,8 @@ public class NotificationService {
 
     private void handleNotification(final User user, final Optional<Watchlist> watchlist) {
         if (watchlist.isEmpty() || watchlist.get().getItems().size() == 0) return;
+        boolean oneItemInStock = watchlist.get().getItems().stream().anyMatch(Item::isInStock);
+        if (!oneItemInStock) return;
         final String registrationToken = user.getRegistrationToken();
         final Message message = Message.builder()
                 .setToken(registrationToken)
