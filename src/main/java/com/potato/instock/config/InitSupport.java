@@ -3,6 +3,9 @@ package com.potato.instock.config;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -10,19 +13,22 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 @Configuration
 @EnableSwagger2
 public class InitSupport {
+    @Value("${GOOGLE_CREDENTIALS}")
+    private String gservicesConfig;
 
     @Bean("firebaseApp")
-    void initFirebase() throws IOException {
-        FileInputStream refreshToken = new FileInputStream("src/main/resources/in-stock-tracker-59cba-firebase-adminsdk-x73c4-ed73e36fe1.json");
-
+    void initFirebase() throws IOException, JSONException {
+        JSONObject jsonObject = new JSONObject(gservicesConfig.toString());
+        InputStream is = new ByteArrayInputStream(jsonObject.toString().getBytes());
         FirebaseOptions options = FirebaseOptions.builder()
-                .setCredentials(GoogleCredentials.fromStream(refreshToken))
+                .setCredentials(GoogleCredentials.fromStream((is)))
                 .setDatabaseUrl("https://in-stock-tracker-59cba-default-rtdb.firebaseio.com/")
                 .build();
 
