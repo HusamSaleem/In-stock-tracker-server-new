@@ -1,4 +1,4 @@
-package com.potato.instock.item;
+package com.potato.instock.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.Gson;

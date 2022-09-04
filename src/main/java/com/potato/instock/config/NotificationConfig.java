@@ -1,4 +1,4 @@
-package com.potato.instock.notification;
+package com.potato.instock.config;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

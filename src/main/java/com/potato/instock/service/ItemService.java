@@ -1,4 +1,4 @@
-package com.potato.instock.item;
+package com.potato.instock.service;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -6,27 +6,35 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSpan;
 import com.potato.instock.exceptions.item.ItemInvalidIdException;
 import com.potato.instock.exceptions.item.ItemNotFoundException;
+import com.potato.instock.model.Item;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Service
 public class ItemService {
-
     private final WebClient webClient;
-    private final HashMap<String, Item> cache; // items the cache can previously hold
-    private final int TIME_IN_CACHE_THRESHHOLD = 300; // 300 seconds before the item in the cache should be updated
+    private static final int MAX_ENTRIES = 500;
+    private static final int TTL = 600 * 1000; // 10 minutes
+    private final Map <String, Item> cache;
 
     @Autowired
     public ItemService() {
-        this.cache = new HashMap<>();
         this.webClient = new WebClient(BrowserVersion.CHROME);
         webClient.getOptions().setCssEnabled(false);
         webClient.getOptions().setDoNotTrackEnabled(true);
         webClient.getOptions().setDownloadImages(false);
         webClient.getOptions().setJavaScriptEnabled(false);
         webClient.getOptions().setUseInsecureSSL(true);
+        cache = new LinkedHashMap<>(MAX_ENTRIES + 1, .75F, true) {
+            public boolean removeEldestEntry(Map.Entry<String, Item> eldest) {
+                return size() > MAX_ENTRIES;
+            }
+        };
     }
 
     private Item getItemFromAmazon(String itemId) {
@@ -34,12 +42,8 @@ public class ItemService {
         if (itemId.length() != 10) {
             throw new ItemInvalidIdException("item id for amazon is invalid");
         }
-
-        // Check if item is already in cache
         if (cache.containsKey(itemId)) {
-            if ((System.currentTimeMillis() - cache.get(itemId).getLastUpdated()) / 1000 <= TIME_IN_CACHE_THRESHHOLD) {
-                return cache.get(itemId);
-            }
+            return cache.get(itemId);
         }
 
         String url = "https://amazon.com/dp/" + itemId;
@@ -89,7 +93,14 @@ public class ItemService {
             throw new ItemNotFoundException("item from amazon with id: " + itemId + " not found");
         }
 
-        Item item = new Item(itemId, price, name, "amazon", inStock, System.currentTimeMillis());
+        final Item item = Item.builder()
+                .itemId(itemId)
+                .price(price)
+                .name(name)
+                .website("amazon")
+                .inStock(inStock)
+                .lastUpdated(System.currentTimeMillis())
+                .build();
         cache.put(itemId, item);
         return item;
     }
@@ -100,5 +111,17 @@ public class ItemService {
         }
 
         throw new ItemNotFoundException("Invalid website name");
+    }
+
+    @Scheduled(fixedRate = TTL, initialDelay = 10000)
+    private void evictFromCache() {
+        final Iterator<Map.Entry<String, Item>> iter = cache.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry<String, Item> entry = iter.next();
+            long time = System.currentTimeMillis() - entry.getValue().getLastUpdated();
+            if (time > TTL) {
+                iter.remove();
+            }
+        }
     }
 }
